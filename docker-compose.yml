@@ -1,0 +1,10 @@
+version: '3'
+services:
+  service:
+    image: crpi-ldcb2d9ge4cmfxso.cn-hangzhou.personal.cr.aliyuncs.com/sirius-hub/hub:latest
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./config/config.json:/app/config.json
+    network_mode: "host"
+    
