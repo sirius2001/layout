@@ -2,11 +2,12 @@
 PACK_PATH =./cmd/server/
 Config  = ./config/config.json
 BINARY = service
-OUTPUT_DIR = pack
+OUTPUT_DIR = $(BINARY)_$(GIT_TAG)
 GIT_TAG := $(shell git describe --tags --abbrev=0)
 ZIP_FILE = $(BINARY)_$(GIT_TAG).zip
 # 默认目标
 all: build
+
 build:
 	@rm -rf $(OUTPUT_DIR) 
 	@go build  -o $(BINARY) $(PACK_PATH)
@@ -33,9 +34,12 @@ build/windows:
 
 pack:build/linux
 	@echo "Creating zip file for $(OUTPUT_DIR)..."
+	@cp ./docker-compose.yml $(OUTPUT_DIR) 
+	@cp ./start.sh $(OUTPUT_DIR) 
+	@cp ./Readme.md $(OUTPUT_DIR)  	
 	@zip -r $(ZIP_FILE) $(OUTPUT_DIR)/*
 	@echo "Zip file created: $(ZIP_FILE)"
-	@rm -rf ./pack
+	@rm -rf $(OUTPUT_DIR)
 
 docker:build/linux
 	docker build -t $(BINARY):latest .

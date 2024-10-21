@@ -1,11 +1,9 @@
 package db
 
 import (
-	"strings"
-
 	"loon/pkg"
 	"loon/pkg/log"
-
+	"strings"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"

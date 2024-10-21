@@ -29,7 +29,6 @@ func NewCore(confPath string) (*Core, error) {
 	if config.Conf().DB.Enable {
 		if err := db.NewDB(config.Conf().Merge, config.Conf().DSN); err != nil {
 			log.Error("NewCore", "err", err)
-			return nil, err
 		}
 	}
 
@@ -75,10 +74,8 @@ func (c *Core) Run() {
 
 func (c *Core) Stop() {
 	for _, service := range c.services {
-		log.Info("stoping service", "service", service.ServiceName(), "addr")
 		if err := service.StopService(); err != nil {
 			log.Error("stop service with err", "err", err)
 		}
-		log.Info("stoped service", "service", service.ServiceName(), "addr")
 	}
 }

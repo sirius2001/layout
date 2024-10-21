@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"io"
 	"loon/pkg/grpc/pb"
 	"loon/pkg/kaf"
 	"loon/pkg/log"
@@ -35,13 +36,21 @@ func (r *RPCService) StartService() error {
 	//TODO:regiser your rpc service
 	pb.RegisterAuditServiceServer(r.grpcServer, r)
 	reflection.Register(r.grpcServer)
-	return r.grpcServer.Serve(r.listenner)
+	if err := r.grpcServer.Serve(r.listenner); err != nil {
+		if err == io.EOF {
+			log.Info("stoped grpc servcie ....")
+			return nil
+		}
+		return err
+	}
+	return nil
 }
 
 // StopService implements core.ServiceInner.
 func (r *RPCService) StopService() error {
 	r.grpcServer.Stop()
-	return r.listenner.Close()
+	log.Info("grpc servcie stoped ...")
+	return nil
 }
 
 func NewRPCServer(addr string) (*RPCService, error) {

@@ -61,9 +61,13 @@ func (a *WebServer) StartService() error {
 
 	http.HandleFunc("/notify", handler)
 	if err := a.server.ListenAndServe(); err != nil {
-		panic(err)
+		if err == http.ErrServerClosed {
+			log.Info("web service stoped ...")
+			return nil
+		}
+		log.Error("listenAndserver err", "err", err)
+		return err
 	}
-
 	return nil
 }
 
