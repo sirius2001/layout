@@ -7,10 +7,11 @@ import (
 )
 
 type Config struct {
-	DB   `json:"db"`
-	Log  `json:"log"`
-	Web  `json:"web"`
-	GRPC `json:"grpc"`
+	DB    `json:"db"`
+	Log   `json:"log"`
+	Web   `json:"web"`
+	GRPC  `json:"grpc"`
+	Kafka `json:"kafka"`
 }
 
 type DB struct {
@@ -37,9 +38,15 @@ type GRPC struct {
 	Addr   string `json:"addr"`
 }
 
+type Kafka struct {
+	Addr  []string `json:"addr"`
+	Topic string   `json:"topic"`
+}
+
 var conf *Config
 
 func LoadConfig(confPath string) error {
+	fmt.Println("Read Config", "Path:", confPath)
 	confFile, err := os.Open(confPath)
 	if err != nil {
 		return fmt.Errorf("config path %s,err:%v", confPath, err)

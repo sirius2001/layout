@@ -1,11 +1,12 @@
 package core
 
 import (
-	"github.com/sirius2001/layout/config"
-	"github.com/sirius2001/layout/pkg/db"
-	"github.com/sirius2001/layout/pkg/grpc"
-	"github.com/sirius2001/layout/pkg/log"
-	"github.com/sirius2001/layout/pkg/web"
+	"loon/config"
+	"loon/pkg/db"
+	"loon/pkg/grpc"
+	"loon/pkg/kaf"
+	"loon/pkg/log"
+	"loon/pkg/web"
 )
 
 type Core struct {
@@ -13,7 +14,6 @@ type Core struct {
 }
 
 func NewCore(confPath string) (*Core, error) {
-
 	if err := config.LoadConfig(confPath); err != nil {
 		return nil, err
 	}
@@ -26,9 +26,11 @@ func NewCore(confPath string) (*Core, error) {
 		MaxSize:  config.Conf().MaxSize,
 	})
 
-	if err := db.NewDB(config.Conf().Merge, config.Conf().DSN); err != nil {
-		log.Error("NewCore", "err", err)
-		return nil, err
+	if config.Conf().DB.Enable {
+		if err := db.NewDB(config.Conf().Merge, config.Conf().DSN); err != nil {
+			log.Error("NewCore", "err", err)
+			return nil, err
+		}
 	}
 
 	var services []ServiceInner
@@ -48,6 +50,11 @@ func NewCore(confPath string) (*Core, error) {
 		} else {
 			services = append(services, grpcService)
 		}
+	}
+
+	if err := kaf.NewProducer(); err != nil {
+		log.Error("connect to kafka error", "err", err)
+		return nil, err
 	}
 
 	return &Core{

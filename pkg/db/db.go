@@ -3,8 +3,8 @@ package db
 import (
 	"strings"
 
-	"github.com/sirius2001/layout/pkg"
-	"github.com/sirius2001/layout/pkg/log"
+	"loon/pkg"
+	"loon/pkg/log"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"

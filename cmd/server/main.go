@@ -6,7 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/sirius2001/layout/core"
+	"loon/core"
 )
 
 var confPath = flag.String("conf", "./config.json", "path/to/your/config.json")

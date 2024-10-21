@@ -1,11 +1,5 @@
 
 {
-    "db":{
-        "enable":true,
-        "merge":true,
-        "dsn":"host=127.0.0.1 user=postgres password=postgres dbname=cloud_video sslmode=disable"
-    },
-
     "log":{
         "level": "info",
         "dir": "./log",
@@ -22,5 +16,11 @@
     "grpc":{
         "enable":true,
         "addr":"0.0.0.0:8181"
+    },
+
+    "kafka":{
+        "addr":["127.0.0.1:9091"],
+        "topic":"notify"
     }
+
 }

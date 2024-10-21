@@ -2,10 +2,14 @@ package web
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 
+	"loon/pkg/grpc/pb"
+	"loon/pkg/kaf"
+	"loon/pkg/log"
+
 	"github.com/gin-gonic/gin"
-	"github.com/sirius2001/layout/pkg/log"
 )
 
 var routers = []RouterInner{}
@@ -29,23 +33,33 @@ func (a *WebServer) ServiceName() string {
 // NewWebService implements core.ServiceInner.
 func NewWebService(addr string) (*WebServer, error) {
 	return &WebServer{
-		addr:  addr,
-		egine: gin.Default(),
+		addr: addr,
 	}, nil
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	// 确保在函数结束时关闭请求体
+	var reocrd pb.AuditRecord
+	if err := json.NewDecoder(r.Body).Decode(&reocrd); err != nil {
+		log.Error("json decode error", "err", err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	defer r.Body.Close()
+	go kaf.Message(&reocrd)
+	// 返回成功状态
+	w.WriteHeader(http.StatusOK)
 }
 
 // StartService implements core.ServiceInner.
 func (a *WebServer) StartService() error {
-	for _, router := range routers {
-		router.Route(a.egine)
-	}
-
-	// 创建一个 HTTP 服务器
+	// 初始化 http.Server
 	a.server = &http.Server{
-		Addr:    a.addr,  // 设置监听地址
-		Handler: a.egine, // 设置路由
+		Addr:    a.addr, // 设置监听地址
+		Handler: nil,    // 如果没有自定义 handler，使用默认 mux
 	}
 
+	http.HandleFunc("/notify", handler)
 	if err := a.server.ListenAndServe(); err != nil {
 		panic(err)
 	}

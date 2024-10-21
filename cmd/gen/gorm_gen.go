@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 
-	"github.com/sirius2001/layout/config"
-	"github.com/sirius2001/layout/pkg/db"
-	"github.com/sirius2001/layout/pkg/log"
+	"loon/config"
+	"loon/pkg/db"
+	"loon/pkg/log"
 
 	"gorm.io/gen"
 )
