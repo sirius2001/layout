@@ -7,8 +7,10 @@ import (
 )
 
 type Config struct {
-	DB  `json:"db"`
-	Log `json:"log"`
+	DB   `json:"db"`
+	Log  `json:"log"`
+	Web  `json:"web"`
+	GRPC `json:"grpc"`
 }
 
 type DB struct {
@@ -23,6 +25,16 @@ type Log struct {
 	MaxAge   int    `json:"max_age"`
 	Duration int    `json:"duration"`
 	MaxSize  int    `json:"max_size"`
+}
+
+type Web struct {
+	Enable bool   `json:"enable"`
+	Addr   string `json:"addr"`
+}
+
+type GRPC struct {
+	Enable bool   `json:"enable"`
+	Addr   string `json:"addr"`
 }
 
 var conf *Config

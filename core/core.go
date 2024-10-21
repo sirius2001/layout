@@ -1,24 +1,19 @@
 package core
 
 import (
-	"sync"
-
 	"github.com/sirius2001/layout/config"
-	"github.com/sirius2001/layout/internal/router"
-	"github.com/sirius2001/layout/pkg/api"
 	"github.com/sirius2001/layout/pkg/db"
+	"github.com/sirius2001/layout/pkg/grpc"
 	"github.com/sirius2001/layout/pkg/log"
+	"github.com/sirius2001/layout/pkg/web"
 )
 
 type Core struct {
-	apiServer *api.APIServer
-	serviceWg sync.WaitGroup
+	services []ServiceInner
 }
 
-// 将会注册的路由组
-var routes = []router.RouterInner{}
-
 func NewCore(confPath string) (*Core, error) {
+
 	if err := config.LoadConfig(confPath); err != nil {
 		return nil, err
 	}
@@ -36,22 +31,47 @@ func NewCore(confPath string) (*Core, error) {
 		return nil, err
 	}
 
-	apiService := api.NewAPIServer("")
-	for _, v := range routes {
-		v.Route(apiService.Engine())
+	var services []ServiceInner
+	if config.Conf().Web.Enable {
+		webService, err := web.NewWebService(config.Conf().Web.Addr)
+		if err != nil {
+			log.Error("web service start failed", "err", err)
+		} else {
+			services = append(services, webService)
+		}
 	}
 
-	return &Core{apiServer: apiService}, nil
+	if config.Conf().GRPC.Enable {
+		grpcService, err := grpc.NewRPCServer(config.Conf().GRPC.Addr)
+		if err != nil {
+			log.Error("grpc service start failed", "err", err)
+		} else {
+			services = append(services, grpcService)
+		}
+	}
+
+	return &Core{
+		services: services,
+	}, nil
 }
 
 func (c *Core) Run() {
-	c.serviceWg.Add(1)
-	go func() {
-		if err := c.apiServer.Run(); err != nil {
-			log.Error("pp start api serivice failed", "err", err)
+	for _, service := range c.services {
+		go func() {
+			if err := service.StartService(); err != nil {
+				panic(err)
+			}
+		}()
+		log.Info("service start suceessfully", "service", service.ServiceName(), "addr", service.ServiceAddr())
+	}
+}
+
+func (c *Core) Stop() {
+	for _, service := range c.services {
+		log.Info("stoping service", "service", service.ServiceName(), "addr")
+		if err := service.StopService(); err != nil {
+			log.Error("stop service with err", "err", err)
 		}
-		c.serviceWg.Done()
-	}()
-	log.Info("app start api serivice successfully")
-	c.serviceWg.Wait()
+		log.Info("stoped service", "service", service.ServiceName(), "addr")
+	}
 }
