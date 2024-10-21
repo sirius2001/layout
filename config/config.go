@@ -2,46 +2,45 @@ package config
 
 import (
 	"encoding/json"
-	"log/slog"
+	"fmt"
 	"os"
 )
 
 type Config struct {
-	HTTP struct {
-		HTTPAddress string `json:"http_address"`
-		HTTPEnable  bool   `json:"http_enable"`
-		HTTPRouter  string `json:"http_router"`
-	} `json:"http"`
-
-	GRPC struct {
-		RPCEnable   bool   `json:"rpc_enable"`
-		GRPCAddress string `json:"rpc_address"`
-	} `json:"grpc"`
-
-	Kafka struct {
-		KafkaAddr  []string `json:"kafka_addr"` // 支持kafka集群 多kafka
-		KafkaTopic string   `json:"kafka_topic"`
-	} `json:"kafka"`
+	DB  `json:"db"`
+	Log `json:"log"`
 }
 
-var config = &Config{}
+type DB struct {
+	Enable bool   `json:"enable"`
+	DSN    string `json:"dsn"`
+	Merge  bool   `json:"merge"`
+}
 
-func LoadConfig(confPath string) (*Config, error) {
-	file, err := os.Open(confPath)
+type Log struct {
+	Dir      string `json:"dir"`
+	Level    string `json:"level"`
+	MaxAge   int    `json:"max_age"`
+	Duration int    `json:"duration"`
+	MaxSize  int    `json:"max_size"`
+}
+
+var conf *Config
+
+func LoadConfig(confPath string) error {
+	confFile, err := os.Open(confPath)
 	if err != nil {
-		slog.Error("LoadConfig", "Err", err)
-		return nil, err
+		return fmt.Errorf("config path %s,err:%v", confPath, err)
 	}
-	defer file.Close()
+	defer confFile.Close()
 
-	if err := json.NewDecoder(file).Decode(&config); err != nil {
-		slog.Error("LoadConfig", "Err", err)
-		return nil, err
+	conf = &Config{}
+	if err := json.NewDecoder(confFile).Decode(conf); err != nil {
+		return err
 	}
-
-	return config, nil
+	return nil
 }
 
-func GetConfig() *Config {
-	return config
+func Conf() *Config {
+	return conf
 }

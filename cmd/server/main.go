@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"cloudVideo/core"
+	"github.com/sirius2001/layout/core"
 )
 
 var confPath = flag.String("conf", "./config.json", "path/to/your/config.json")

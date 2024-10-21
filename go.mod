@@ -1,4 +1,4 @@
-module cloudVideo
+module github.com/sirius2001/layout
 
 go 1.22.0
 

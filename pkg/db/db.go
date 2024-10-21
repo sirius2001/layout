@@ -1,9 +1,10 @@
 package db
 
 import (
-	"cloudVideo/pkg"
-	"cloudVideo/pkg/log"
 	"strings"
+
+	"github.com/sirius2001/layout/pkg"
+	"github.com/sirius2001/layout/pkg/log"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"

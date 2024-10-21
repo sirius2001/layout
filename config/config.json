@@ -1,17 +1,18 @@
+
 {
-    "http":{
-        "http_enable": true,
-        "http_address": "0.0.0.0:8080",
-        "http_router": "/notify"
+    "db":{
+        "enable":true,
+        "merge":true,
+        "dsn":"host=127.0.0.1 user=postgres password=postgres dbname=cloud_video sslmode=disable"
     },
 
-    "grpc":{
-        "rpc_enable": true,
-        "rpc_address": "0.0.0.0:8081"
-    },
-    
-    "kafka":{
-         "kafka_addr": ["127.0.0.1:9091"],
-         "kafka_topic": "notify"
+    "log":{
+        "level": "info",
+        "dir": "./log",
+        "max_age": 30,
+        "duration": 1,
+        "max_size": 100
     }
+
+    
 }

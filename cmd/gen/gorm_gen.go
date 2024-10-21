@@ -1,10 +1,11 @@
 package main
 
 import (
-	"cloudVideo/config"
-	"cloudVideo/pkg/db"
-	"cloudVideo/pkg/log"
 	"flag"
+
+	"github.com/sirius2001/layout/config"
+	"github.com/sirius2001/layout/pkg/db"
+	"github.com/sirius2001/layout/pkg/log"
 
 	"gorm.io/gen"
 )

@@ -1,12 +1,13 @@
 package core
 
 import (
-	"cloudVideo/config"
-	"cloudVideo/internal/router"
-	"cloudVideo/pkg/api"
-	"cloudVideo/pkg/db"
-	"cloudVideo/pkg/log"
 	"sync"
+
+	"github.com/sirius2001/layout/config"
+	"github.com/sirius2001/layout/internal/router"
+	"github.com/sirius2001/layout/pkg/api"
+	"github.com/sirius2001/layout/pkg/db"
+	"github.com/sirius2001/layout/pkg/log"
 )
 
 type Core struct {
