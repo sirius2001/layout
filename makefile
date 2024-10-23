@@ -1,8 +1,8 @@
 # 定义变量
 PACK_PATH =./cmd/server/
 Config  = ./config/config.json
-BINARY = service
-OUTPUT_DIR = $(BINARY)_$(GIT_TAG)
+BINARY = loon
+OUTPUT_DIR = pack
 GIT_TAG := $(shell git describe --tags --abbrev=0)
 ZIP_FILE = $(BINARY)_$(GIT_TAG).zip
 # 默认目标

@@ -6,4 +6,6 @@ services:
     volumes:
       - ./config.json:/app/config.json
       - ./log:/app/log/
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     network_mode: "host" 

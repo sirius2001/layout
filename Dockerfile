@@ -5,10 +5,10 @@ FROM alpine:latest
 WORKDIR /app
 
 # 从构建阶段复制二进制文件
-COPY ./pack/service /app/service 
+COPY ./pack/loon /app/loon 
 
 # 确保二进制文件可执行
-RUN chmod +x /app/service
+RUN chmod +x /app/loon
 
 # 运行二进制文件，指定配置文件
-CMD ["./service", "-conf", "./config.json"]
+CMD ["./loon", "-conf", "./config.json"]
