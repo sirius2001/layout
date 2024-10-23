@@ -68,7 +68,7 @@ func findLastLogFile(dir string) (string, bool) {
 		return "", false
 	}
 
-	if time.Now().After(latestModTime) {
+	if time.Now().Local().After(latestModTime) {
 		return "", false
 	}
 
@@ -83,7 +83,7 @@ func (l *Logger) loadfile() (string, error) {
 		return oldPath, nil
 	}
 
-	logName := time.Now().Format("20060102150405") + "-" + time.Now().Add(duration).Format("20060102150405") + ".log"
+	logName := time.Now().Local().Format("20060102150405") + "-" + time.Now().Add(duration).Local().Format("20060102150405") + ".log"
 	logPath := filepath.Join(l.conf.Dir, logName)
 	file, err := os.Create(logPath)
 	if err != nil {
