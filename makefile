@@ -37,7 +37,7 @@ pack:build/linux
 	@echo "Zip file created: $(ZIP_FILE)"
 	@rm -rf ./pack
 
-upload:build/linux
+docker:build/linux
 	docker build -t $(BINARY):latest .
 	docker login --username=aliyun4541033394 crpi-ldcb2d9ge4cmfxso.cn-hangzhou.personal.cr.aliyuncs.com
 	docker tag  $(BINARY):latest crpi-ldcb2d9ge4cmfxso.cn-hangzhou.personal.cr.aliyuncs.com/sirius-hub/hub:latest
@@ -48,4 +48,4 @@ clean:
 	@rm -rf $(OUTPUT_DIR) $(BINARY) $(ZIP_FILE)
 	@echo "Clean up completed."
 
-.PHONY: all build pack  upload clean
+.PHONY: all build pack  docker clean
