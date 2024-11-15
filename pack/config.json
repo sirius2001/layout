@@ -1,0 +1,25 @@
+
+{
+    "log":{
+        "level": "info",
+        "dir": "./log",
+        "max_age": 30,
+        "duration": 1,
+        "max_size": 100
+    },
+
+    "web":{
+        "enable":true,
+        "addr":"0.0.0.0:8081"
+    },
+
+    "grpc":{
+        "enable":true,
+        "addr":"0.0.0.0:8181"
+    },
+
+    "kafka":{
+        "addr":["127.0.0.1:9091"],
+        "topic":"notify"
+    }
+}

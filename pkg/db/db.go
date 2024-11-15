@@ -1,8 +1,8 @@
 package db
 
 import (
-	"loon/pkg"
-	"loon/pkg/log"
+	"github.com/sirius2001/loon/pkg"
+	"github.com/sirius2001/loon/pkg/log"
 	"strings"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"

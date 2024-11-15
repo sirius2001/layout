@@ -1,4 +1,4 @@
-module loon
+module github.com/sirius2001/loon
 
 go 1.22.0
 

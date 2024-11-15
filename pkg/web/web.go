@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"loon/pkg/grpc/pb"
-	"loon/pkg/kaf"
-	"loon/pkg/log"
+	"github.com/sirius2001/loon/pkg/grpc/pb"
+	"github.com/sirius2001/loon/pkg/kaf"
+	"github.com/sirius2001/loon/pkg/log"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package rpc_service;
+
+option java_multiple_files = true;
+
+option java_package = "com.zdxlz.ops.audit.grpc";
+option go_package = "/pb";
+
+service AuditService {
+  rpc Upload(AuditRecord) returns (AuditReply){}
+}
+
+message AuditRecord{
+
+  string userId = 1;
+
+  string app = 2;
+
+  string url = 3;
+
+  string operation = 4;
+
+  string param = 5;
+
+  string body = 6;
+
+  string time = 7;
+
+  string md5 = 8;
+
+  string module = 9;
+
+  string forwardedIP = 10;
+
+  string terminal = 11;
+
+  string executionTime = 12;
+
+  bytes result = 13;
+}
+
+message  AuditReply{
+  int32 status = 1;
+  string msg = 2;
+}

@@ -1,7 +1,7 @@
 # 定义变量
 PACK_PATH =./cmd/server/
 Config  = ./config/config.json
-BINARY = loon
+BINARY = github.com/sirius2001/loon
 OUTPUT_DIR = pack
 GIT_TAG := $(shell git describe --tags --abbrev=0)
 ZIP_FILE = $(BINARY)_$(GIT_TAG).zip

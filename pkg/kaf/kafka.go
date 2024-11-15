@@ -2,9 +2,9 @@ package kaf
 
 import (
 	"encoding/json"
-	"loon/config"
-	"loon/pkg/grpc/pb"
-	"loon/pkg/log"
+	"github.com/sirius2001/loon/config"
+	"github.com/sirius2001/loon/pkg/grpc/pb"
+	"github.com/sirius2001/loon/pkg/log"
 
 	"github.com/IBM/sarama"
 )
@@ -23,8 +23,18 @@ func NewProducer() error {
 	return nil
 }
 
+type message struct {
+	*pb.AuditRecord
+	Result string `json:"result"`
+}
+
 func Message(record *pb.AuditRecord) {
-	data, err := json.Marshal(record)
+	m := &message{
+		AuditRecord: record,
+		Result:      string(record.Result),
+	}
+
+	data, err := json.Marshal(m)
 	if err != nil {
 		log.Error("Message Marshal", "err", err)
 		return

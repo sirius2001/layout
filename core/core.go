@@ -1,12 +1,12 @@
 package core
 
 import (
-	"loon/config"
-	"loon/pkg/db"
-	"loon/pkg/grpc"
-	"loon/pkg/kaf"
-	"loon/pkg/log"
-	"loon/pkg/web"
+	"github.com/sirius2001/loon/config"
+	"github.com/sirius2001/loon/pkg/db"
+	"github.com/sirius2001/loon/pkg/grpc"
+	"github.com/sirius2001/loon/pkg/kaf"
+	"github.com/sirius2001/loon/pkg/log"
+	"github.com/sirius2001/loon/pkg/web"
 )
 
 type Core struct {

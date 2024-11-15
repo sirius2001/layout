@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"loon/core"
-	"loon/pkg/log"
+	"github.com/sirius2001/loon/core"
+	"github.com/sirius2001/loon/pkg/log"
 	"os"
 	"os/signal"
 	"syscall"
